@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusRide | Smart Bike Sharing</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">🚲</div><div><h2>CampusRide</h2><small>SMART MOBILITY SYSTEM</small></div></div>
+    <p class="menu-label">MAIN MENU</p>
+    <button class="nav active" data-page="dashboard">▦ <span>Dashboard</span></button>
+    <button class="nav" data-page="users">👥 <span>User Management</span></button>
+    <button class="nav" data-page="bikes">🚲 <span>Bicycle Fleet</span></button>
+    <button class="nav" data-page="rides">🛣️ <span>Ride Sessions</span></button>
+    <button class="nav" data-page="reports">📊 <span>Reports & Analytics</span></button>
+    <div class="side-footer"><b>CampusRide v1.0</b><br><small>Sustainable mobility for modern campuses.</small></div>
+  </aside>
+
+  <main>
+    <header>
+      <div><h1 id="title">Dashboard Overview</h1><p id="subtitle">Monitor your smart campus mobility system</p></div>
+      <div class="admin"><button class="bell">🔔</button><div class="avatar">AD</div><div><b>Administrator</b><small>System Manager</small></div></div>
+    </header>
+
+    <div class="content">
+      <section id="dashboard" class="page active">
+        <div class="hero"><div><span>SMART CAMPUS MOBILITY PLATFORM</span><h2>Welcome back, Administrator 👋</h2><p>Manage bicycles, users, ride sessions and monitor campus mobility from one intelligent platform.</p><label>● System Operational</label></div><div class="hero-bike">🚲</div></div>
+        <div class="stats">
+          <article><div class="stat-head"><span>REGISTERED USERS</span><i>👥</i></div><strong id="statUsers">0</strong><small>Campus community members</small></article>
+          <article><div class="stat-head"><span>TOTAL BICYCLES</span><i>🚲</i></div><strong id="statBikes">0</strong><small>Active fleet capacity</small></article>
+          <article><div class="stat-head"><span>ACTIVE RIDES</span><i>🛣️</i></div><strong id="statActive">0</strong><small>Currently in progress</small></article>
+          <article><div class="stat-head"><span>TOTAL REVENUE</span><i>₹</i></div><strong id="statRevenue">₹0</strong><small>From completed rides</small></article>
+        </div>
+        <div class="two-col">
+          <div class="card"><div class="card-title"><div><h3>Recent Ride Activity</h3><p>Latest bicycle sharing sessions</p></div></div><div id="activity"></div></div>
+          <div class="card"><h3>Quick Actions</h3><p>Manage your system quickly</p><div class="quick">
+            <button onclick="go('users')">+ Register New User</button>
+            <button onclick="go('bikes')">+ Add New Bicycle</button>
+            <button class="green" onclick="go('rides')">▶ Start Ride Session</button>
+            <button class="outline" onclick="go('reports')">📊 Generate Report</button>
+          </div></div>
+        </div>
+      </section>
+
+      <section id="users" class="page">
+        <div class="card"><h3>Register New User</h3><p>Add students or staff to the bike sharing system</p>
+          <div class="form-grid">
+            <div><label>User ID</label><input id="userId" placeholder="Example: STU101"></div>
+            <div><label>Full Name</label><input id="userName" placeholder="Enter full name"></div>
+            <div><label>User Type</label><select id="userType"><option>Student</option><option>Staff</option><option>Faculty</option></select></div>
+            <div><label>Email Address</label><input id="userEmail" type="email" placeholder="example@campus.edu"></div>
+          </div><button class="primary" onclick="addUser()">+ Register User</button>
+        </div>
+        <div class="card"><h3>Registered Users</h3><p>All users enrolled in CampusRide</p>
+          <div class="table-wrap"><table><thead><tr><th>USER</th><th>USER ID</th><th>TYPE</th><th>EMAIL</th><th>RIDES</th><th>STATUS</th></tr></thead><tbody id="usersTable"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="bikes" class="page">
+        <div class="card"><h3>Add New Bicycle</h3><p>Register a bicycle to the campus fleet</p>
+          <div class="form-grid"><div><label>Bicycle ID</label><input id="bikeId" placeholder="Example: BIKE105"></div><div><label>Campus Location</label><input id="bikeLocation" placeholder="Example: Central Library"></div></div>
+          <button class="primary" onclick="addBike()">+ Add Bicycle</button>
+        </div>
+        <div class="card"><h3>Bicycle Fleet</h3><p>Real-time availability and utilization status</p><div class="bike-grid" id="bikeGrid"></div></div>
+      </section>
+
+      <section id="rides" class="page">
+        <div class="card"><h3>Start New Ride Session</h3><p>Allocate an available bicycle to a registered user</p>
+          <div class="form-grid">
+            <div><label>Ride ID</label><input id="rideId" placeholder="Example: RIDE1001"></div>
+            <div><label>Select User</label><select id="rideUser"></select></div>
+            <div><label>Select Available Bicycle</label><select id="rideBike"></select></div>
+            <div><label>Fare Policy</label><input value="₹5/km + ₹1/minute" disabled></div>
+          </div><button class="green-btn" onclick="startRide()">▶ Start Ride</button>
+        </div>
+        <div class="card"><h3>Ride Sessions</h3><p>Track active and completed rides</p>
+          <div class="table-wrap"><table><thead><tr><th>RIDE ID</th><th>USER</th><th>BIKE</th><th>DISTANCE</th><th>DURATION</th><th>FARE</th><th>STATUS</th><th>ACTION</th></tr></thead><tbody id="ridesTable"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="reports" class="page">
+        <div class="report-grid">
+          <article><small>TOTAL COMPLETED RIDES</small><strong id="repRides">0</strong></article>
+          <article><small>TOTAL DISTANCE TRAVELLED</small><strong id="repDistance">0 km</strong></article>
+          <article><small>AVERAGE RIDE DURATION</small><strong id="repDuration">0 min</strong></article>
+          <article><small>TOTAL REVENUE GENERATED</small><strong id="repRevenue">₹0</strong></article>
+        </div>
+        <div class="card"><div class="card-title"><div><h3>Bicycle Utilization Report</h3><p>Performance analysis of the campus bicycle fleet</p></div><button class="primary" onclick="window.print()">🖨 Print Report</button></div>
+          <div class="table-wrap"><table><thead><tr><th>BIKE ID</th><th>LOCATION</th><th>TOTAL RIDES</th><th>UTILIZATION</th><th>CURRENT STATUS</th></tr></thead><tbody id="reportTable"></tbody></table></div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
